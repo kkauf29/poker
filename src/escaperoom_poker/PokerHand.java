@@ -13,12 +13,9 @@ import java.util.List;
  *
  * @author kkauf
  */
-public class PokerHand implements Comparable<PokerHand> {
+public class PokerHand {
     
     private ArrayList<Card> hand;
-    private int handValue;
-    private String handType;
-    
     
     public PokerHand(ArrayList<Card> hand) {
        this.hand = hand;         
@@ -121,103 +118,88 @@ public class PokerHand implements Comparable<PokerHand> {
         return both;
     }    
         
-    public void checkHandType() {
+    public String getHandType() {
         if (straight() && flush() && hand.get(4).getRank() == 14) {
-            handType = "royal flush";
+            return "royal flush";
+        }
+        
+        if (threeOfAKind() && onePair()) {
+            return "full house";
+        }
+        
+        if (straight() && flush()){
+            return "straight flush";
+        }
+        
+        if (flush()) {
+            return "flush";
+        }
+        
+        if (straight()) {
+            return "straight";
+        }
+        
+        if (fourOfAKind()){
+            return "four of a kind";
+        }
+        
+        if (twoPairs()) {
+            return "two pairs";
+        }
+        
+        if (onePair()) {
+            return "one pair";
+        }
+        
+        if (threeOfAKind()) {
+            return "three of a kind";
+        }
 
-        }
-        else if (threeOfAKind() && onePair()) {
-            handType = "full house";
-        }
-        
-        else if (straight() && flush()){
-            handType = "straight flush";
-        }
-        
-        else if (flush()) {
-            handType = "flush";
-        }
-        else if (straight()) {
-            handType = "straight";
-        }
-        else if (fourOfAKind()){
-            handType = "four of a kind";
-        }
-        else if (twoPairs()) {
-            handType = "two pairs";
-        }
-        else if (onePair()) {
-            handType = "one pair";
-        }
-        else if (threeOfAKind()) {
-            handType = "three of a kind";
-        }
-
-        else {
-            handType = "high card";
-        }
-        
+        return "high card";
     }
-    public String getHandType(){
-        return handType;
-    }
-        
     
-    
-    public void checkHand() {
+    public int getHandValue() {
         Collections.sort(hand);//cards arranged in ascending order by rank
         
         //checks for royal flush        
-        if(straight() && flush() && hand.get(4).getRank() == 14) {
-            handValue = 1000;
+        if (straight() && flush() && hand.get(4).getRank() == 14) {
+            return 1000;
         }
+        
         //checks for straight flush
-        else if (straight() && flush()) {
-            handValue = 900 + hand.get(4).getRank();
+        if (straight() && flush()) {
+            return 900 + hand.get(4).getRank();
         }
-        else if (fourOfAKind()) {
-            handValue = 800 + hand.get(2).getRank();
+        
+        if (fourOfAKind()) {
+            return 800 + hand.get(2).getRank();
         }
+        
         //checks for full house
-        else if (threeOfAKind() && onePair()) {
-            handValue = 700 + hand.get(3).getRank(); //not sure if this is correct
-        }
-        else if (flush()) {
-            handValue = 600 + hand.get(4).getRank();
-        }
-        else if (straight()) {
-            handValue = 500 + hand.get(4).getRank();
-        }
-        else if (threeOfAKind()) {
-            handValue = 400 + hand.get(2).getRank();
-        }
-        else if (twoPairs()) {
-            handValue = 300 + hand.get(2).getRank(); //need to fix
-        }
-        else if (onePair()) {
-            handValue = 200 + hand.get(2).getRank(); //need to fix
-        }    
-        else {
-            handValue = 100 + hand.get(4).getRank();
+        if (threeOfAKind() && onePair()) {
+            return 700 + hand.get(3).getRank(); //not sure if this is correct
         }
         
-    }
-    public int getHandValue() {
-        return handValue;
-    }
-    
-    @Override
-    public int compareTo(PokerHand player2) {
+        if (flush()) {
+            return 600 + hand.get(4).getRank();
+        }
         
-        if(this.handValue == player2.handValue){
-            return 0;
+        if (straight()) {
+            return 500 + hand.get(4).getRank();
         }
-        else if(this.handValue > player2.handValue){
-            return 1;
+        
+        if (threeOfAKind()) {
+            return 400 + hand.get(2).getRank();
         }
-        return -1;
+        
+        if (twoPairs()) {
+            return 300 + hand.get(2).getRank(); //need to fix
+        }
+        
+        if (onePair()) {
+            return 200 + hand.get(2).getRank(); //need to fix
+        }
+        
+        return 100 + hand.get(4).getRank();
     }
-    
-    
-    
 }

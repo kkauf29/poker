@@ -75,95 +75,71 @@ public class PokerGameViewFXMLController implements Initializable {
     private Button nextRound;
     @FXML    
     private ImageView imgControl;
-       
-            
-
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        pokerBoard.setStyle("-fx-background-color: #008000;");
-        CardDeck pokerGame = new CardDeck();
-        ArrayList<Card> allCards = pokerGame.dealGame();
-        List<Card> hand1 = allCards.subList(0, 5);
-        List<Card> hand2 = allCards.subList(5, 10);
-        ArrayList<Card> arrayHand1 = new ArrayList<>();
-        arrayHand1.addAll(hand1);
-        ArrayList<Card> arrayHand2 = new ArrayList<>();
-        arrayHand2.addAll(hand2);
-        player1Card1.setText(arrayHand1.get(0).showCard());
-        player1Card2.setText(arrayHand1.get(1).showCard());
-        player1Card3.setText(arrayHand1.get(2).showCard());
-        player1Card4.setText(arrayHand1.get(3).showCard());
-        player1Card5.setText(arrayHand1.get(4).showCard());
+    
+    private PokerGame currentGame;
+    
+    private void startNewGame() {
+        currentGame = new PokerGame();
+        
+        ArrayList<Card> player1Cards = currentGame.playerCards(1);
+        ArrayList<Card> player2Cards = currentGame.playerCards(2);
+        
+        player1Card1.setText(player1Cards.get(0).showCard());
+        player1Card2.setText(player1Cards.get(1).showCard());
+        player1Card3.setText(player1Cards.get(2).showCard());
+        player1Card4.setText(player1Cards.get(3).showCard());
+        player1Card5.setText(player1Cards.get(4).showCard());
         player2Card1.setText("?");
         player2Card2.setText("?");
         player2Card3.setText("?");
         player2Card4.setText("?");
         player2Card5.setText("?"); 
         player1.setText("Player 1 Cards");
-
-        PokerHand player1 = new PokerHand(arrayHand1);
-        PokerHand player2 = new PokerHand(arrayHand2);
-        player1.checkHand();
-        player2.checkHand();
-        player1.checkHandType();
-        player2.checkHandType();
         
         betLabel.setText("Place a bet");
         int player1WinningsTotal = 0;
         playerBet.setItems(FXCollections.observableArrayList("Fold","Bet $10")); 
         String roundMessage[];
-        roundMessage = new String[]{ "player 1 folds", "player 1 bets $10"};
+        roundMessage = new String[]{"player 1 folds", "player 1 bets $10"};
                 
         playerBet.getSelectionModel().selectedIndexProperty().addListener(
                 (ObservableValue<? extends Number> observable, Number oldValue, Number newValue ) -> {
                     
                     messageBet.setText(roundMessage[newValue.intValue()]);
-                    player2Card1.setText(arrayHand2.get(0).showCard());
-                    player2Card2.setText(arrayHand2.get(1).showCard());
-                    player2Card3.setText(arrayHand2.get(2).showCard());
-                    player2Card4.setText(arrayHand2.get(3).showCard());
-                    player2Card5.setText(arrayHand2.get(4).showCard());
-                    playerBet.hide();                    
-                    if(player1.compareTo(player2) > 0){
-                        winLoseMessage.setText("Player wins with " + player1.getHandType());
-
+                    player2Card1.setText(player2Cards.get(0).showCard());
+                    player2Card2.setText(player2Cards.get(1).showCard());
+                    player2Card3.setText(player2Cards.get(2).showCard());
+                    player2Card4.setText(player2Cards.get(3).showCard());
+                    player2Card5.setText(player2Cards.get(4).showCard());
+                    
+                    int winner = currentGame.getWinner();
+                    
+                    if (winner == 1) {
+                        winLoseMessage.setText("Player wins with " + currentGame.playerHandDescription(1));
                     }
-                    else if (player1.compareTo(player2) < 0){
-                        winLoseMessage.setText("player loses with " + player1.getHandType());
+                    else if (winner == 2){
+                        winLoseMessage.setText("Player loses with " + currentGame.playerHandDescription(1));
                     }
                     else {
-                        winLoseMessage.setText("Players Tied");
+                        winLoseMessage.setText("Players tied");
                     }
-                    
-        
-     
         });
+    }
+    
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        pokerBoard.setStyle("-fx-background-color: #00A000;");
         
+        startNewGame();
         
         nextRound.setText("Next Round");
-//        nextRound.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override public void handle(ActionEvent e) {
-//               restart(initialize(URL url, ResourceBundle rb));
-//            }
-//        });
-        
-
-    
-        
-
-
+        nextRound.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+               startNewGame();
+            }
+        });
     }
-//    @Override
-//    public void handle(ActionEvent event) {
-//        Button clicked = (Button)event.getSource();
-////        System.out.println(clicked.idProperty().getValue());
-//        if (clicked.idProperty().getValue().equals("nextRound")) {
-//            nextRound.setText("");
-//        } 
-//
-//    }
-    
 }
