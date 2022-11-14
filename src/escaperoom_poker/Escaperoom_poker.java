@@ -11,7 +11,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
+ * *Kim Kaufman
+ * CSC 2024
+ * 11/13/22
  * @author kkauf
  */
 
