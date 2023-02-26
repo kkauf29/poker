@@ -23,7 +23,7 @@ public class PokerGame {
         player1Hand = new PokerHand(this.playerCards(1));
         player2Hand = new PokerHand(this.playerCards(2));
     }
-    
+    //divides 10 Card objects into two hands
     public ArrayList<Card> playerCards(int player) {
         if (player == 1) {
             return new ArrayList<>(deal.subList(0, 5));

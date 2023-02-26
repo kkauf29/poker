@@ -4,6 +4,7 @@
  */
 package escaperoom_poker;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -22,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
@@ -77,6 +79,16 @@ public class PokerGameViewFXMLController implements Initializable {
     private ImageView imgControl;
     @FXML
     private Label gameTotalLabel;
+    @FXML
+    private ImageView playerTwoC1;
+    @FXML
+    private ImageView playerTwoC2;
+    @FXML
+    private ImageView playerTwoC3;
+    @FXML
+    private ImageView playerTwoC4;
+    @FXML
+    private ImageView playerTwoC5;
     
     private PokerGame currentGame;
     
@@ -95,13 +107,20 @@ public class PokerGameViewFXMLController implements Initializable {
         player1Card3.setText(player1Cards.get(2).showCard());
         player1Card4.setText(player1Cards.get(3).showCard());
         player1Card5.setText(player1Cards.get(4).showCard());
+        File file = new File("cardimages/rrcc_card.png");
+        Image imgP2 = new Image(file.toURI().toString(), 80, 100, true, true);
+        playerTwoC1.setImage(imgP2);
         player2Card1.setText("?");
+        playerTwoC2.setImage(imgP2);
         player2Card2.setText("?");
         player2Card3.setText("?");
+        playerTwoC3.setImage(imgP2);
         player2Card4.setText("?");
+        playerTwoC4.setImage(imgP2);
         player2Card5.setText("?"); 
+        playerTwoC5.setImage(imgP2);
+        
         player1.setText("Player 1 Cards");
-
         player2.setText("Player 2 Cards");
         messageBet.setText(" ");
         winLoseMessage.setText(" ");
@@ -113,7 +132,7 @@ public class PokerGameViewFXMLController implements Initializable {
         }
          
     }
-    
+    //Player uses choice box to select if they are betting or folding
     private void setUpBetBox(){
         betLabel.setText("Place a bet");
         
@@ -123,7 +142,7 @@ public class PokerGameViewFXMLController implements Initializable {
                 
         playerBet.getSelectionModel().selectedIndexProperty().addListener(
                 (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-                    
+                    //once the player has selected to bet 10 or fold, the player 2 cards are displayed and messages
                     player2Card1.setText(player2Cards.get(0).showCard());
                     player2Card2.setText(player2Cards.get(1).showCard());
                     player2Card3.setText(player2Cards.get(2).showCard());
@@ -131,7 +150,7 @@ public class PokerGameViewFXMLController implements Initializable {
                     player2Card5.setText(player2Cards.get(4).showCard());
                     messageBet.setText("Player 2: " + currentGame.playerHandDescription(2));
                     
-
+                    //if the player bets, they see which player wins or loses with information on both player hands
                     if (newValue.equals(1)) {
                         int winner = currentGame.getWinner();
                         if (winner == 1) {
